@@ -1,0 +1,72 @@
+There are four steps that python takes when you hit return:
+ - lexing,
+ - parsing,
+ - compiling,
+ - interpreting.
+
+Lexing is breaking the line of code you just typed into tokens.
+The parser takes those tokens and generates a structure that shows their
+relationship to each other (in this case, an Abstract Syntax Tree).
+The compiler then takes the AST and turns it into one (or more) code objects.
+Finally, the interpreter takes each code object executes the code it represents.
+
+
+Lexing
+
+When it comes to implementing a language, the first thing needed is the ability
+to process a text file and recognize what it says. The traditional way to do this
+is to use a lexer (aka ‘scanner’) to break the input up into “tokens”. Each token
+returned by the lexer includes a token type and potentially some metadata
+(e.g. the numeric value of a number).
+
+Source: http://www.llvmpy.org/llvmpy-doc/0.9/doc/kaleidoscope/PythonLangImpl1.html#the-lexer
+
+
+Parsing
+
+Parser builds Abstract Syntax Tree (AST) from lexer tokens. At first parser builds
+Concrete Syntax Tree (CST) from the code. Then it transforms the CST to the AST.
+
+In computer science, an abstract syntax tree (AST), or just syntax tree, is a
+tree representation of the abstract syntactic structure of source code written
+in a programming language. Each node of the tree denotes a construct occurring
+in the source code. The syntax is "abstract" in not representing every detail
+appearing in the real syntax (like it is done in CST). For instance, grouping
+parentheses are implicit in the tree structure, and a syntactic construct like
+an if-condition-then expression may be denoted by means of a single node with
+three branches.
+
+The (AST) for a program captures its behavior in such a way that it is easy for
+later stages of the compiler (e.g. code generation) to interpret. We basically
+want one object for each construct in the language, and the AST should closely
+model the language.
+
+Source: https://tech.blog.aknin.name/2010/04/02/pythons-innards-introduction/
+        https://en.wikipedia.org/wiki/Abstract_syntax_tree
+        http://llvm.org/docs/tutorial/OCamlLangImpl2.html#the-abstract-syntax-tree-ast
+
+
+Compiling
+
+Compiler translates AST into a code object.
+
+(Next steps are based on PyPy docs, so may be PyPy specific)
+- AST Optimization pypy/interpreter/astcompiler/optimize.py contains the AST optimizer. It does constant folding of expressions, and other simple transformations like making a load of the name “None” into a constant.
+Symbol analysis.
+- Before writing bytecode, a symbol table is built in pypy/interpreter/astcompiler/symtable.py. It determines if every name in the source is local, implicitly global (no global declaration), explicitly global (there’s a global declaration of the name in the scope), a cell (the name in used in nested scopes), or free (it’s used in a nested function).
+Bytecode generation.
+- Bytecode is emitted in pypy/interpreter/astcompiler/codegen.py. Each bytecode is represented temporarily by the Instruction class in pypy/interpreter/astcompiler/assemble.py. After all bytecodes have been emitted, it’s time to build the code object. Jump offsets and bytecode information like the line number table and stack depth are computed. Finally, everything is passed to a brand new PyCode object.
+
+TODO: Take a look at PyPy implementation.
+Source: http://doc.pypy.org/en/latest/parser.html
+
+
+Interpreting
+
+Nice place to start with: https://tech.blog.aknin.name/2010/04/02/pythons-innards-introduction/
+
+
+http://www.devshed.com/c/a/python/how-python-runs-programs/
+http://akaptur.com/blog/2013/11/15/introduction-to-the-python-interpreter/
+http://akaptur.com/blog/2013/11/15/introduction-to-the-python-interpreter-2/
+http://akaptur.com/blog/2013/11/15/introduction-to-the-python-interpreter-3/

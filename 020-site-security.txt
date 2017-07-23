@@ -1,0 +1,80 @@
+Injection flaws
+
+Injection flaws result from a classic failure to filter untrusted input. It can happen when you pass unfiltered data to the SQL server (SQL injection), to the browser (XSS – we’ll talk about this later), to the LDAP server (LDAP injection), or anywhere else. The problem here is that the attacker can inject commands to these entities, resulting in loss of data and hijacking clients’ browsers.
+
+Prevention: The good news is that protecting against injection is “simply” a matter of filtering your input properly and thinking about whether an input can be trusted. But the bad news is that all input needs to be properly filtered, unless it can unquestionably be trusted (but the saying “never say never” does come to mind here).
+
+
+
+Cross Site Scripting (XSS)
+
+This is a fairly widespread input sanitization failure (essentially a special case of common mistake #1). An attacker gives your web application JavaScript tags on input. When this input is returned to the user unsanitized, the user’s browser will execute it. It can be as simple as crafting a link and persuading a user to click it, or it can be something much more sinister. On page load the script runs and, for example, can be used to post your cookies to the attacker.
+
+Prevention: There’s a simple web security solution: don’t return HTML tags to the client. This has the added benefit of defending against HTML injection, a similar attack whereby the attacker injects plain HTML content (such as images or loud invisible flash players) – not high-impact but surely annoying (“please make it stop!”). Usually, the workaround is simply converting all HTML entities, so that <script> is returned as &lt;script&gt;. The other often employed method of sanitization is using regular expressions to strip away HTML tags using regular expressions on < and >, but this is dangerous as a lot of browsers will interpret severely broken HTML just fine. Better to convert all characters to their escaped counterparts.
+
+
+
+Insecure Direct Object References
+
+This is a classic case of trusting user input and paying the price in a resulting security vulnerability. A direct object reference means that an internal object such as a file or database key is exposed to the user. The problem with this is that the attacker can provide this reference and, if authorization is either not enforced (or is broken), the attacker can access or do things that they should be precluded from.
+
+Example: download.php?file=something.txt
+
+
+
+Sensitive data exposure
+
+This web security vulnerability is about crypto and resource protection. Sensitive data should be encrypted at all times, including in transit and at rest. No exceptions. Credit card information and user passwords should never travel or be stored unencrypted, and passwords should always be hashed. Obviously the crypto/hashing algorithm must not be a weak one – when in doubt, use AES (256 bits and up) and RSA (2048 bits and up).
+
+Prevention:
+
+In transit: Use HTTPS with a proper certificate and PFS (Perfect Forward Secrecy). Do not accept anything over non-HTTPS connections. Have the secure flag on cookies.
+
+In storage: This is harder. First and foremost, you need to lower your exposure. If you don’t need sensitive data, shred it. Data you don’t have can’t be stolen. Do not store credit card information ever, as you probably don’t want to have to deal with being PCI compliant. Sign up with a payment processor such as Stripe or Braintree. Second, if you have sensitive data that you actually do need, store it encrypted and make sure all passwords are hashed. For hashing, use of bcrypt is recommended. If you don’t use bcrypt, educate yourself on salting and rainbow tables.
+
+
+
+Missing function level access control
+
+This is simply an authorization failure. It means that when a function is called on the server, proper authorization was not performed. A lot of times, developers rely on the fact that the server side generated the UI and they think that the functionality that is not supplied by the server cannot be accessed by the client. It is not as simple as that, as an attacker can always forge requests to the “hidden” functionality and will not be deterred by the fact that the UI doesn’t make this functionality easily accessible. Imagine there’s an /admin panel, and the button is only present in the UI if the user is actually an admin. Nothing keeps an attacker from discovering this functionality and misusing it if authorization is missing.
+
+Prevention: On the server side, authorization must always be done. Yes, always. No exceptions or vulnerabilities will result in serious problems.
+
+
+
+Cross Site Request Forgery (CSRF)
+
+This is a nice example of a confused deputy attack whereby the browser is fooled by some other party into misusing its authority. A 3rd party site, for example, can make the user’s browser misuse it’s authority to do something for the attacker.
+
+In the case of CSRF, a 3rd party site issues requests to the target site (e.g., your bank) using your browser with your cookies / session. If you are logged in on one tab on your bank’s homepage, for example, and they are vulnerable to this attack, another tab can make your browser misuse its credentials on the attacker’s behalf, resulting in the confused deputy problem. The deputy is the browser that misuses its authority (session cookies) to do something the attacker instructs it to do.
+
+Example:
+
+    Attacker Alice wants to lighten target Todd’s wallet by transfering some of his money to her. Todd’s bank is vulnerable to CSRF. To send money, Todd has to access the following URL:
+
+    http://example.com/app/transferFunds?amount=1500&destinationAccount=4673243243
+
+    After this URL is opened, a success page is presented to Todd, and the transfer is done. Alice also knows, that Todd frequently visits a site under her control at blog.aliceisawesome.com, where she places the following snippet:
+
+    <img src="http://example.com/app/transferFunds?amount=1500&destinationAccount=4673243243" width="0" height="0" />
+
+    Upon visiting Alice’s website, Todd’s browser thinks that Alice links to an image, and automatically issues an HTTP GET request to fetch the “picture”, but this actually instructs Todd’s bank to transfer $1500 to Alice.
+
+Prevention: Store a secret token in a hidden form field which is inaccessible from the 3rd party site. You of course always have to verify this hidden field. Some sites ask for your password as well when modifying sensitive settings (like your password reminder email, for example), although I’d suspect this is there to prevent the misuse of your abandoned sessions (in an internet cafe for example).
+
+
+
+Using components with known vulnerabilities
+
+Prevention:
+
+    Exercise caution. Beyond obviously using caution when using such components, do not be a copy-paste coder. Carefully inspect the piece of code you are about to put into your software, as it might be broken beyond repair (or in some cases, intentionally malicious).
+
+    Stay up-to-date. Make sure you are using the latest versions of everything that you trust, and have a plan to update them regularly. At least subscribe to a newsletter of new security vulnerabilities regarding the product.
+
+
+
+Unvalidated redirects and forwards
+
+This is once again an input filtering issue. Suppose that the target site has a redirect.php module that takes a URL as a GET parameter. Manipulating the parameter can create a URL on targetsite.com that redirects the browser to malwareinstall.com. When the user sees the link, they will see targetsite.com/blahblahblah which the user thinks is trusted and is safe to click. Little do they know that this will actually transfer them onto a malware drop (or any other malicious) page. Alternatively, the attacker might redirect the browser to targetsite.com/deleteprofile?confirm=1.
+

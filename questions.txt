@@ -1,0 +1,32 @@
+1*.  How ngnix works?
+2.  What is WSGI?
+ 2.1. How Gunicorn works?
+ 2.2. How uwsgi works?
+ 2.3. Compare 2.1 and 2.2.
+http://docs.python-guide.org/en/latest/scenarios/web/
+3.  How networks works?
+1-2-3. How Internet request is processed?
+4.  How ubuntu works?
+6.  How relationships databases works?
+7.  How japronto (https://github.com/squeaky-pl/japronto) works?
+    https://medium.freecodecamp.com/million-requests-per-second-with-python-95c137af319#.s0mounsoq
+8.  What is LDAP?
+9.  How do Linux sockets work? Clear sockets definition.
+10. How to write simple site with aiohttp?
+    http://igordavydenko.com/talks/lvivpy-4/#slide-1
+11. Network protocols.
+12. Non-relative DB: Cassandra, Dynamo, MongoDB, CouchDB.
+13. How postgress works.
+14. How Python interpretor works.
+15. What is GIL? How does it behaves in Python 2 and Python 3.
+16. How to use docker?
+17. How to use python wheel?
+18. How add tags to texts.
+19. Garbage collector in Python.
+20*. Site attacks and security.
+!21. SOLID.
+!22. Database transactions.
+!23. Database queries.
+!24. Database indexing.
+!25. How prefetch related and select related work in Django.
+26. DB Indexes: btree, GiST, GiS.

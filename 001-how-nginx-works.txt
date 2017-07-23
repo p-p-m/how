@@ -1,0 +1,76 @@
+INTRODUCTION
+
+           ----- CACHE LOADER
+           |
+MASTER --------- CACHE WORKERS
+           |
+           ----- WORKERS
+
+The MASTER process performs the privileged operations such as reading configuration
+and binding to ports, and then creates a small number of child processes.
+
+The CACHE LOADER process runs at startup to load the disk-based cache into memory,
+and then exits. It is scheduled conservatively, so its resource demands are low.
+
+The CACHE MANAGER process runs periodically and prunes entries from the disk
+caches to keep them within the configured sizes.
+
+The WORKER processes do all of the work! They handle network connections, read
+and write content to disk, and communicate with upstream servers.
+
+When an NGINX server is active, only the worker processes are busy. Each worker
+process handles multiple connections in a non-blocking fashion, reducing the
+number of context switches. The NGINX configuration recommended in most cases
+– running one worker process per CPU core – makes the most efficient use of
+hardware resources.
+
+
+DETAILED ABOUT THE WORKERS
+
+Traditional process- or thread-based models of handling concurrent connections
+involve handling each connection with a separate process or thread, and blocking
+on network or input/output operations.
+
+Each NGINX WORKER can process much more than one request.
+1. Upon startup, an initial set of listening sockets is created.
+2. The worker waits for events on the listen and connection sockets.
+   Range of connection sockets are granted by master.
+3. An event on the listen socket means that a client has started a new chess game.
+   The worker creates a new connection socket.
+   The worker uses state machine to define rules for particular connection type.
+   Like a rules for a game party.
+4. An event on a connection socket means that the client has made a new move.
+   The worker responds promptly.
+
+Workers then continuously accept, read from and write to the sockets while
+processing HTTP requests and responses. Overall, the key principle is to be as
+non-blocking as possible. The only situation where nginx can still block is when
+there's not enough disk storage performance for a worker process.
+
+Inside a worker, the sequence of actions leading to the run-loop where the
+response is generated looks like the following:
+
+    1. Begin ngx_worker_process_cycle().
+    2. Process events with OS specific mechanisms (such as epoll or kqueue).
+    3. Accept events and dispatch the relevant actions.
+    4. Process/proxy request header and body.
+    5. Generate response content (header, body) and stream it to the client.
+    6. Finalize request.
+    7. Re-initialize timers and events.
+
+The run-loop itself (steps 5 and 6) ensures incremental generation of a response
+and streaming it to the client. A more detailed view of processing an HTTP request
+might look like this:
+
+    1. Initialize request processing.
+    2. Process header.
+    3. Process body.
+    4. Call the associated handler.
+    5. Run through the processing phases.
+
+Notice(!) that all this actions are non-blocking and event-based.
+
+SOURCES:
+
+https://www.nginx.com/blog/inside-nginx-how-we-designed-for-performance-scale/
+http://www.aosabook.org/en/nginx.html
