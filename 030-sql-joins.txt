@@ -1,0 +1,43 @@
+
+(INNER) JOIN: Returns records that have matching values in both tables
+
++---------+
+|         |
+|    +----------+
+|    |XXXX|     |
++---------+     |
+     |          |
+     +----------+
+
+
+LEFT (OUTER) JOIN: Return all records from the left table, and the matched records from the right table
+
++---------+
+|XXXXXXXXX|
+|XXXX+----------+
+|XXXX|XXXX|     |
++---------+     |
+     |          |
+     +----------+
+
+
+RIGHT (OUTER) JOIN: Return all records from the right table, and the matched records from the left table
+
++---------+
+|         |
+|    +----------+
+|    |XXXX|XXXXX|
++---------+XXXXX|
+     |XXXXXXXXXX|
+     +----------+
+
+
+FULL (OUTER) JOIN: Return all records when there is a match in either left or right table
+
++----------+
+|XXXXXXXXXX|
+|XXXX+----------+
+|XXXX|XXXXX|XXXX|
++----------+XXXX|
+     |XXXXXXXXXX|
+     +----------+

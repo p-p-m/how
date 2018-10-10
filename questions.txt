@@ -23,10 +23,14 @@ http://docs.python-guide.org/en/latest/scenarios/web/
 17. How to use python wheel?
 18. How add tags to texts.
 19. Garbage collector in Python.
-20*. Site attacks and security.
+20*. Site security.
 !21. SOLID.
 !22. Database transactions.
 !23. Database queries.
 !24. Database indexing.
 !25. How prefetch related and select related work in Django.
-26. DB Indexes: btree, GiST, GiS.
+26. Postgress idexes.
+!27. Threads in Python.
+!28. OSI system.
+29. Basic algorithms.
+30. SQL joins.
