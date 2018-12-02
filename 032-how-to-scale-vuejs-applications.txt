@@ -1,0 +1,2 @@
+https://medium.com/@stephane.souron/hello-bfa140f6ec0
+https://medium.com/@stephane.souron/making-a-large-scale-app-with-vue-js-part-1-modularize-your-store-bf9066436502

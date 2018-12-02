@@ -1,0 +1,36 @@
+Comments classification
+
+Based on article http://antirez.com/news/124
+
+Types:
+
+ - Function comments - the goal of a function comment is to prevent the reader from reading code in the first place. Instead, after reading the comment, it should be possible to consider some code as a black box that should obey certain rules. Normally function comments are at the top of functions definitions, but they may be at other places, documenting classes, macros, or other functionally isolated blocks of code that define some interface.
+
+ - Design comments - more often located at the start of a file. The design comment basically states how and why a given piece of code uses certain algorithms, techniques, tricks, and implementation. It is an higher level overview of what you'll see implemented in the code.
+
+ - Why comments - explain the reason why the code is doing something, even if what the code is doing is crystal clear. Now this is the kind of thing that happens continuously in software once it has reached a given level of complexity. Regardless of the code involved, the replication protocol has some level of complexity itself, so we need to do certain things in order to make sure that other bad things can't happen. Probably these kind of comments are, in some way, opportunities to reason about the system and check if it should be improved, so that such complexity is no longer needed, hence also the comment can be removed. However often making something simpler may make something else harder or is simply not viable, or requires future work breaking backward compatibility.
+
+ - Teacher comments - teach the *domain* (for example math, computer graphics, networking, statistics, complex data structures) in which the code is operating, that may be one outside of the reader skills set, or is simply too full of details to recall all them from memory.
+
+ - Checklist comments - sometimes because of language limitations, design issues, or simply because of the natural complexity arising in systems, it is not possible to centralize a given concept or interface in one piece, so there are places in the code that tells you to remember to do things in some other place of the code.
+
+ - Guide comments - babysit the reader, assist her while processing what is written in the source code by providing clear division, rhythm, and introducing what you are going to read. Guide comments’ sole reason to exist is to lower the cognitive load of the programmer reading some code.
+
+ - Trivial comments - degenerated form of guide comments. A trivial comment is a guide comment where the cognitive load of reading the comment is the same or higher than just reading the associated code.
+
+ - Debt comments - Debt comments are technical debts statements hard coded inside the source code itself (TODO, XXX, FIXME, etc...)
+
+ - Backup comments - the ones where the developer comments older versions of some code block or even a whole function, because she or he is insecure about the change that was operated in the new one.
+
+
+ My opinion about comments
+
+ 1. Must have:
+    Function comments, Design comments, Why comments, Teacher comments
+ 2. Comments that signals of code debts:
+    Checklist comments, Debt comments.
+ 3. Worthless comments:
+    Trivial comments, Backup comments.
+ 4. Ideally python code should be clear and readable so guide comments would become trivial. However if code or business logic is complex enough guide comments should be added.
+
+
