@@ -1,0 +1,6 @@
+Source: https://www.educative.io/collection/page/5668639101419520/5649050225344512/5728116278296576
+
+key-value storages: Redis, Dynamo, Voldemort
+document databases: CouchDB, MongoDB
+wide-column databases: Cassandra, HBase
+Graph databases: Neo4j, InfiniteGraph

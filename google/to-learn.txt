@@ -1,0 +1,33 @@
+1. Complex algorithms: dejikstra, A*.
+
+2. Graph algorithms: Consider if a problem can be applied with graph algorithms like distance, search, connectivity, cycle-detection, etc. There are three basic ways to represent a graph in memory (objects and pointers, matrix, and adjacency list) — familiarize yourself with each representation and its pros and cons. You should know the basic graph traversal algorithms, breadth-first search and depth-first search. Know their computational complexity, their tradeoffs and how to implement them in real code.
+https://www.geeksforgeeks.org/greedy-algorithms/
+
+3. Recursion: what is tail optimization? How to rewrite recursion as a cycle.
+
+4. How dict is implemented, ordered dict and deque complexity. Counter complexities.
+
+(DONE) 5. Quicksort, timsort, mergesort.
+
+6. Binary tree, N-ary tree, trie-tree, red-black tree, AVL tree, BFS and DFS - inorder, postorder, preorder.
+
+7. Implement hash table with arrays. How HashSet is implemented.
+
+8. Discrete math: probability, A, C
+
+(DONE) 9. Heapq.
+
+
+
+TODO:
+1. Understand DP for coins problem. Try to solve another DP medium task.
+2. Go through DP on top coder solve easy and medium tasks
+
+
+To check myself:
+1. How to find gdp/lcm.
+2. KMP algorithm.
+3. Binary search implementation.
+
+
+
