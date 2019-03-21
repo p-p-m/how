@@ -19,7 +19,7 @@ https://www.geeksforgeeks.org/greedy-algorithms/
 
 
 
-TODO:
+TODO: done
 1. Understand DP for coins problem. Try to solve another DP medium task.
 2. Go through DP on top coder solve easy and medium tasks
 
