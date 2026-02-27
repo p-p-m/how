@@ -34,6 +34,9 @@ http://docs.python-guide.org/en/latest/scenarios/web/
 28. OSI system.
 29. Basic algorithms.
 30. SQL joins.
-31. How to write comments.
-32. How to scale VueJS applications.
+31. [DONE] How to write comments.
+32. [DONE] How to scale VueJS applications.
 33. How elasticsearch works?
+34. Docker - basic explanation
+35. Docker containers management systems
+36. Kubernetis
